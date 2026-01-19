@@ -2,7 +2,7 @@ import json
 import pika
 import time
 from pika.exceptions import AMQPConnectionError, ChannelClosedByBroker, StreamLostError
-from config import AMQP_URL
+from config import AMQP_URLS
 
 RETRY_DELAY = 3
 MAX_RETRIES = 10
@@ -14,16 +14,21 @@ def safe_json_load(body):
     except Exception:
         return None
 
-def create_connection():
-    """Connessione resiliente con retry."""
+def create_connection(role: str):
+    if role not in AMQP_URLS:
+        raise ValueError(f"Ruolo non valido: {role}")
+
+    amqp_url = AMQP_URLS[role]
+
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            params = pika.URLParameters(AMQP_URL)
+            params = pika.URLParameters(amqp_url)
             return pika.BlockingConnection(params)
         except (AMQPConnectionError, StreamLostError):
-            print(f"[ERRORE] Connessione fallita. Tentativo {attempt}/{MAX_RETRIES}. Ritento tra {RETRY_DELAY}s...")
+            print(f"[WARN] Connessione fallita ({attempt}/{MAX_RETRIES}). Ritento...")
             time.sleep(RETRY_DELAY)
-    raise RuntimeError("Impossibile stabilire la connessione con RabbitMQ.")
+
+    raise RuntimeError("Impossibile connettersi a RabbitMQ.")
 
 def declare_queue(channel, name):
     """Creazione queue durable."""

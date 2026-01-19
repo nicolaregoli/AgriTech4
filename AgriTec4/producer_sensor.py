@@ -16,9 +16,9 @@ def generate_data():
 def main():
     while True:
         try:
-            conn = create_connection()
+            conn = create_connection("producer")
             ch = conn.channel()
-            declare_queue(ch, QUEUE)
+            #declare_queue(ch, QUEUE)
 
             print("[PRODUCER] Avvio invio dati sensori...")
             while True:

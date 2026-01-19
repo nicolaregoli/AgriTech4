@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>AgriTec4</Name>
     <RootNamespace>AgriTec4</RootNamespace>
+    <TestFramework>Pytest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +31,11 @@
     <Compile Include="producer_sensor.py" />
     <Compile Include="test_cloudamqp.py" />
     <Compile Include="utils_rabbit.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="requirements.txt">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

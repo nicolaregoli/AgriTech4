@@ -13,9 +13,9 @@ def process_data(data):
 def main():
     while True:
         try:
-            conn = create_connection()
+            conn = create_connection("monitor")
             ch = conn.channel()
-            declare_queue(ch, QUEUE)
+           # declare_queue(ch, QUEUE)
 
             def callback(ch, method, properties, body):
                 data = safe_json_load(body)

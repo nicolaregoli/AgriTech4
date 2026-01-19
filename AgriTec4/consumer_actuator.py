@@ -7,9 +7,9 @@ QUEUE = "comandi.irrigazione"
 def main():
     while True:
         try:
-            conn = create_connection()
+            conn = create_connection("actuator")
             ch = conn.channel()
-            declare_queue(ch, QUEUE)
+           #declare_queue(ch, QUEUE)
 
             def callback(ch, method, properties, body):
                 data = safe_json_load(body)
