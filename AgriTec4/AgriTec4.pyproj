@@ -4,7 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>0be600b3-5cb3-43d9-af88-d5dc490b7f2b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>AgriTec4.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,20 +23,35 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AgriTec4.py" />
-    <Compile Include="config.py" />
-    <Compile Include="connection.py" />
-    <Compile Include="consumer_actuator.py" />
-    <Compile Include="consumer_monitor.py" />
-    <Compile Include="control_irrigation.py" />
-    <Compile Include="producer_sensor.py" />
-    <Compile Include="test_cloudamqp.py" />
-    <Compile Include="utils_rabbit.py" />
+    <Compile Include="src\common\config.py" />
+    <Compile Include="src\consumer\consumer_actuator.py" />
+    <Compile Include="src\consumer\consumer_monitor.py" />
+    <Compile Include="src\consumer\control_irrigation.py" />
+    <Compile Include="src\producer\producer_sensor.py" />
+    <Compile Include="src\common\utils_rabbit.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="dashboard\dashboard.html" />
+    <Content Include="readme.md">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="requirements.txt">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="screenshot\binding_irrigazione.png" />
+    <Content Include="screenshot\binding_telemetria.png" />
+    <Content Include="screenshot\Diagramma deployment.drawio.png" />
+    <Content Include="screenshot\Diagramma sequenza.drawio %281%29.png" />
+    <Content Include="screenshot\diagramma_architettura.drawio.png" />
+    <Content Include="screenshot\users.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="screenshot\" />
+    <Folder Include="src\" />
+    <Folder Include="src\common\" />
+    <Folder Include="src\consumer\" />
+    <Folder Include="dashboard\" />
+    <Folder Include="src\producer\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

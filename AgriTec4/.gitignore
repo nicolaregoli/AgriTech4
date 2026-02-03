@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# se usi venv locale
+.venv/
+venv/
+
+# impostazioni IDE
+.vscode/
+*.pyproj

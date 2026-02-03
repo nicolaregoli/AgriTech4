@@ -1,7 +1,7 @@
 import json, time, random
 from datetime import datetime, timezone
 import pika
-from utils_rabbit import create_connection, declare_queue
+from src.common.utils_rabbit import create_connection
 
 QUEUE = "telemetria.vigneto"
 
@@ -18,8 +18,7 @@ def main():
         try:
             conn = create_connection("producer")
             ch = conn.channel()
-            #declare_queue(ch, QUEUE)
-
+          
             print("[PRODUCER] Avvio invio dati sensori...")
             while True:
                 payload = json.dumps(generate_data())
@@ -29,7 +28,7 @@ def main():
                     body=payload,
                     properties=pika.BasicProperties(delivery_mode=2)
                 )
-                print(f"[PRODUCER] Inviato: {payload}")
+                print(f"[PRODUCER] Dato Inviato: {payload}")
                 time.sleep(5)
 
         except Exception as e:

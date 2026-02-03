@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Telemetria Vigneto</title>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+    background: #111;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+h1 {
+    color: #66ccff;
+}
+table {
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    min-width: 420px;
+}
+td {
+    border: 1px solid #333;
+    padding: 8px;
+}
+td:first-child {
+    color: #66ccff;
+    font-weight: bold;
+    width: 180px;
+}
+canvas {
+    max-width: 900px;
+    max-height: 400px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Monitoraggio Telemetria Vigneto</h1>
+
+<table>
+    <tr><td>Vigneto</td><td id="vigneto_id">—</td></tr>
+    <tr><td>Umidità suolo (%)</td><td id="umidita">—</td></tr>
+    <tr><td>Temperatura aria (°C)</td><td id="temperatura">—</td></tr>
+    <tr><td>Timestamp</td><td id="timestamp">—</td></tr>
+</table>
+
+<canvas id="chart"></canvas>
+
+<script>
+// blocca ogni interazione sul grafico che deve essere di sola lettura
+document.getElementById("chart").addEventListener("dblclick", e => {
+    e.preventDefault();
+    e.stopPropagation();
+}, { passive: false });
+
+// dati
+const umiditaData = [];
+const temperaturaData = [];
+const labels = [];
+
+// grafico con chart js
+const ctx = document.getElementById("chart").getContext("2d");
+const chart = new Chart(ctx, {
+    type: "line",
+    data: {
+        labels: labels,
+       datasets: [
+		  {
+			label: "Umidità suolo (%)",
+			data: umiditaData,
+			borderColor: "#66ccff",
+			borderWidth: 2,
+			pointRadius: 2,
+			yAxisID: "y_umidita"
+		  },
+		  {
+			label: "Temperatura aria (°C)",
+			data: temperaturaData,
+			borderColor: "#ff9966",
+			borderWidth: 2,
+			pointRadius: 2,
+			yAxisID: "y_temp"
+		  }
+		]
+    },
+    options: {
+		  responsive: true,
+		  animation: false,
+
+		  // abilita hover/tooltip con popup che mostra dati
+		  interaction: { mode: "index", intersect: false }, // tooltip su entrambe le serie alla stessa X
+
+		  plugins: {
+			// legenda visibile ma NON cliccabile
+			legend: { onClick: () => {} },
+
+			// tooltip ON
+			tooltip: { enabled: true }
+		  },
+
+		  scales: {
+			y_umidita: { type: "linear", position: "left", min: 0, max: 60 },
+			y_temp: { type: "linear", position: "right", min: 0, max: 50, grid: { drawOnChartArea: false } },
+			x: { ticks: { maxTicksLimit: 8 } }
+		  }
+		}
+});
+
+// aggiornamento dati
+async function aggiornaDati() {
+    try {
+        const response = await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
+        if (!response.ok) return;
+
+        const data = await response.json();
+
+        document.getElementById("vigneto_id").innerText = data.vigneto_id;
+        document.getElementById("umidita").innerText = data.umidita_suolo;
+        document.getElementById("temperatura").innerText = data.temperatura_aria;
+        document.getElementById("timestamp").innerText = data.timestamp;
+
+        labels.push(new Date().toLocaleTimeString());
+        umiditaData.push(Number(data.umidita_suolo));
+        temperaturaData.push(Number(data.temperatura_aria));
+
+        if (labels.length > 20) {
+            labels.shift();
+            umiditaData.shift();
+            temperaturaData.shift();
+        }
+
+        chart.update();
+    } catch (e) {
+        console.log("Dashboard – errore:", e);
+    }
+}
+
+// avvio
+aggiornaDati();
+setInterval(aggiornaDati, 3000);
+</script>
+
+</body>
+</html>
