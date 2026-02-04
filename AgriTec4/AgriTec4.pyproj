@@ -40,9 +40,11 @@
     </Content>
     <Content Include="screenshot\binding_irrigazione.png" />
     <Content Include="screenshot\binding_telemetria.png" />
+    <Content Include="screenshot\channel.png" />
     <Content Include="screenshot\Diagramma deployment.drawio.png" />
     <Content Include="screenshot\Diagramma sequenza.drawio %281%29.png" />
     <Content Include="screenshot\diagramma_architettura.drawio.png" />
+    <Content Include="screenshot\queue.png" />
     <Content Include="screenshot\users.png" />
   </ItemGroup>
   <ItemGroup>
